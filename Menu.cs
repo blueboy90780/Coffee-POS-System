@@ -5,8 +5,8 @@ namespace Coffee_Shop_POS_Project;
 internal sealed class Menu //Displays the menu of food/drinks and prompting users for it
 {
     // Static Fields
-    private static Dictionary<string, Dictionary<string, Tuple<int, int, int>>> _drinksAvailable;
-    private static Dictionary<string, Dictionary<string, int>> _dessertsAvailable;
+    private static Dictionary<string, Dictionary<string, (int, int, int)>> _drinksAvailable;
+    private static Dictionary<string, Dictionary<string, (int, int, int)>> _dessertsAvailable;
     
     // Constructor
     public Menu()
@@ -16,8 +16,8 @@ internal sealed class Menu //Displays the menu of food/drinks and prompting user
     }
     
     // Getter Methods (Properties)
-    internal static Dictionary<string, Dictionary<string, int>> DessertsAvailable => _dessertsAvailable;
-    internal static Dictionary<string, Dictionary<string, Tuple<int, int, int>>> DrinksAvailable => _drinksAvailable;
+    internal static Dictionary<string, Dictionary<string, (int, int, int)>> DrinksAvailable => _drinksAvailable;
+    internal static Dictionary<string, Dictionary<string, (int, int, int)>> DessertsAvailable => _dessertsAvailable;
 
     // Other Methods
     static void InstantiateDrinks()
@@ -48,19 +48,19 @@ internal sealed class Menu //Displays the menu of food/drinks and prompting user
     }
     static void InstantiateDesserts()
     {
-        _dessertsAvailable = new Dictionary<string, Dictionary<string, int>>
+        _dessertsAvailable = new Dictionary<string, Dictionary<string, (int, int, int)>>
         {
-            ["Cakes"] = new Dictionary<string, int>
+            ["Cakes"] = new Dictionary<string, (int, int, int)>
             {
-                ["Banana Cake"] = 29_000,
-                ["Passion Fruit Cheese Cake"] = 29_000,
-                ["Coffee Cheese Cake"] = 29_000,
-                ["Tiramisu Cake"] = 35_000
+                ["Banana Cake"] = (29_000, 0, 0),
+                ["Passion Fruit Cheese Cake"] = (29_000, 0, 0),
+                ["Coffee Cheese Cake"] = (29_000, 0, 0),
+                ["Tiramisu Cake"] = (35_000, 0, 0)
             },
-            ["Mousse"] = new Dictionary<string, int>
+            ["Mousse"] = new Dictionary<string, (int, int, int)>
             {
-                ["Peach Mousse"] = 35_000,
-                ["Cocoa Mousse"] = 35_000
+                ["Peach Mousse"] = (35_000,0,0),
+                ["Cocoa Mousse"] = (35_000,0,0)
             }
         };
     }
