@@ -1,26 +1,15 @@
 namespace Coffee_Shop_POS_Project;
 
-internal sealed class Menu //Displays the menu of food/drinks and prompting users for it
+internal struct Menu //Displays the menu of food/drinks and prompting users for it
 {
     // Static Fields
-    private static Dictionary<string, Dictionary<string, (int, int, int)>> _drinksAvailable;
-    private static Dictionary<string, Dictionary<string, (int, int, int)>> _dessertsAvailable;
-    
-    // Constructor
-    public Menu()
-    {
-        InstantiateDrinks();
-        InstantiateDesserts();
-    }
-    
-    // Getter Methods (Properties)
-    internal static Dictionary<string, Dictionary<string, (int, int, int)>> DrinksAvailable => _drinksAvailable;
-    internal static Dictionary<string, Dictionary<string, (int, int, int)>> DessertsAvailable => _dessertsAvailable;
+    private static Dictionary<string, Dictionary<string, (int, int, int)>> _drinksAvailable = null!;
+    private static Dictionary<string, Dictionary<string, (int, int, int)>> _dessertsAvailable = null!;
 
-    // Other Methods
-    static Dictionary<string, Dictionary<string, (int, int, int)>> InstantiateDrinks()
+    // Constructor
+    static Menu()
     {
-        _drinksAvailable = new Dictionary<string, Dictionary<string, (int, int, int)>> 
+        DrinksAvailable = new Dictionary<string, Dictionary<string, (int, int, int)>>
         {
             ["Traditional Coffee"] = new Dictionary<string, (int, int, int)>
             {
@@ -43,12 +32,8 @@ internal sealed class Menu //Displays the menu of food/drinks and prompting user
                 ["Green Tea with Red Bean"] = (45_000, 55_000, 65_000)
             }
         };
-
-        return _drinksAvailable;
-    }
-    static Dictionary<string, Dictionary<string, (int, int, int)>> InstantiateDesserts()
-    {
-        _dessertsAvailable = new Dictionary<string, Dictionary<string, (int, int, int)>>
+        ;
+        DessertsAvailable = new Dictionary<string, Dictionary<string, (int, int, int)>>
         {
             ["Cakes"] = new Dictionary<string, (int, int, int)>
             {
@@ -59,11 +44,22 @@ internal sealed class Menu //Displays the menu of food/drinks and prompting user
             },
             ["Mousse"] = new Dictionary<string, (int, int, int)>
             {
-                ["Peach Mousse"] = (35_000,0,0),
-                ["Cocoa Mousse"] = (35_000,0,0)
+                ["Peach Mousse"] = (35_000, 0, 0),
+                ["Cocoa Mousse"] = (35_000, 0, 0)
             }
         };
-        
-        return _dessertsAvailable;
+    }
+
+    // Properties
+    internal static Dictionary<string, Dictionary<string, (int, int, int)>> DrinksAvailable
+    {
+        get => _drinksAvailable;
+        set => _drinksAvailable = value;
+    }
+
+    internal static Dictionary<string, Dictionary<string, (int, int, int)>> DessertsAvailable
+    {
+        get => _dessertsAvailable;
+        set => _dessertsAvailable = value;
     }
 }
