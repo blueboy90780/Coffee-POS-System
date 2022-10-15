@@ -1,5 +1,3 @@
-using System.Collections;
-
 namespace Coffee_Shop_POS_Project;
 
 internal sealed class Menu //Displays the menu of food/drinks and prompting users for it
@@ -20,33 +18,35 @@ internal sealed class Menu //Displays the menu of food/drinks and prompting user
     internal static Dictionary<string, Dictionary<string, (int, int, int)>> DessertsAvailable => _dessertsAvailable;
 
     // Other Methods
-    static void InstantiateDrinks()
+    static Dictionary<string, Dictionary<string, (int, int, int)>> InstantiateDrinks()
     {
-        _drinksAvailable = new Dictionary<string, Dictionary<string, Tuple<int, int, int>>> 
+        _drinksAvailable = new Dictionary<string, Dictionary<string, (int, int, int)>> 
         {
-            ["Traditional Coffee"] = new Dictionary<string, Tuple<int, int, int>>
+            ["Traditional Coffee"] = new Dictionary<string, (int, int, int)>
             {
-                ["Iced Coffee with Condensed Milk"] = new Tuple<int, int, int>(29_000, 39_000, 45_000),
-                ["Iced Black Coffee"] = new Tuple<int, int, int>(29_000, 35_000, 39_000),
-                ["Iced White PHIN Coffee & Condensed Milk"] = new Tuple<int, int, int>(29_000, 39_000, 45_000)
+                ["Iced Coffee with Condensed Milk"] = (29_000, 39_000, 45_000),
+                ["Iced Black Coffee"] = (29_000, 35_000, 39_000),
+                ["Iced White PHIN Coffee & Condensed Milk"] = (29_000, 39_000, 45_000)
             },
-            ["PhinDi Coffee"] = new Dictionary<string, Tuple<int, int, int>>
+            ["PhinDi Coffee"] = new Dictionary<string, (int, int, int)>
             {
-                ["Iced Coffee with Almond & Fresh Milk"] = new Tuple<int, int, int>(45_000, 49_000, 55_000),
-                ["Iced Coffee with Milk Foam"] = new Tuple<int, int, int>(45_000, 49_000, 55_000),
-                ["Iced Coffee with Chocolate"] = new Tuple<int, int, int>(45_000, 49_000, 55_000)
+                ["Iced Coffee with Almond & Fresh Milk"] = (45_000, 49_000, 55_000),
+                ["Iced Coffee with Milk Foam"] = (45_000, 49_000, 55_000),
+                ["Iced Coffee with Chocolate"] = (45_000, 49_000, 55_000)
             },
-            ["Tea"] = new Dictionary<string, Tuple<int, int, int>>
+            ["Tea"] = new Dictionary<string, (int, int, int)>
             {
-                ["Tea with Lotus Seeds"] = new Tuple<int, int, int>(45_000, 55_000, 65_000),
-                ["Tea with Peach Jelly"] = new Tuple<int, int, int>(45_000, 55_000, 65_000),
-                ["Peach Tea with Lemongrass"] = new Tuple<int, int, int>(45_000, 55_000, 65_000),
-                ["Tea with Lychee Jelly"] = new Tuple<int, int, int>(45_000, 55_000, 65_000),
-                ["Green Tea with Red Bean"] = new Tuple<int, int, int>(45_000, 55_000, 65_000)
+                ["Tea with Lotus Seeds"] = (45_000, 55_000, 65_000),
+                ["Tea with Peach Jelly"] = (45_000, 55_000, 65_000),
+                ["Peach Tea with Lemongrass"] = (45_000, 55_000, 65_000),
+                ["Tea with Lychee Jelly"] = (45_000, 55_000, 65_000),
+                ["Green Tea with Red Bean"] = (45_000, 55_000, 65_000)
             }
         };
+
+        return _drinksAvailable;
     }
-    static void InstantiateDesserts()
+    static Dictionary<string, Dictionary<string, (int, int, int)>> InstantiateDesserts()
     {
         _dessertsAvailable = new Dictionary<string, Dictionary<string, (int, int, int)>>
         {
@@ -63,5 +63,7 @@ internal sealed class Menu //Displays the menu of food/drinks and prompting user
                 ["Cocoa Mousse"] = (35_000,0,0)
             }
         };
+        
+        return _dessertsAvailable;
     }
 }
