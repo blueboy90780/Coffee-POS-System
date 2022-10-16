@@ -6,4 +6,5 @@ internal enum DrinkSizes
     Small = 0,
     Medium = 1,
     Large = 2,
+    Null = 0
 }

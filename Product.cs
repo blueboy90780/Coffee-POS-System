@@ -10,17 +10,19 @@ internal struct Product
     private string Category { get; set; } // The category of drink or food this product belongs to
 
     // Constructor
-    internal Product(DrinkSizes? size, string itemName, int price, string category)
+    internal Product(DrinkSizes size, string itemName, int price, string category)
     {
-        this.StringSize = $" ({size})" ?? "";
         this.ItemName = itemName;
         this.Price = price;
         this.Category = category;
+        
+        // Deciding on DrinkSize
+        if (size == DrinkSizes.Null) StringSize = "";
+        else StringSize = $" ({size})";
     }
 
     public override string ToString()
     {
         return $"{ItemName}{StringSize} = {Price}";
     }
-
 }

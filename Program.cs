@@ -69,6 +69,6 @@ class Program
         var itemName = availableFood.GroupsCollection[chosenCategory].FoodCollection[chosenFood].ItemName;
         var price = availableFood.GroupsCollection[chosenCategory].FoodCollection[chosenFood].Price;
         var category = availableFood.GroupsCollection[chosenCategory].GroupName;
-        return new Product(null, itemName, price, category);
+        return new Product(DrinkSizes.Null, itemName, price, category);
     }
 }
