@@ -55,8 +55,7 @@ internal static class Menu
     #region Records
     internal record Drinks(string ItemName, int[] Price);
     internal record Food(string ItemName, int Price);
-    internal record DrinksGroup(string GroupName, List<Drinks> DrinksCollection); // Accepts Drinks as a collection to allow users to \
-    // add their own drink group when needed
+    internal record DrinksGroup(string GroupName, List<Drinks> DrinksCollection); // Accepts Drinks as a collection to allow users to add their own drink group when needed
     internal record FoodGroup(string GroupName, List<Food> FoodCollection);
     internal record DrinksCategory(string ProductType, List<DrinksGroup> GroupsCollection);
     internal record FoodCategory(string ProductType, List<FoodGroup> GroupsCollection);

@@ -4,10 +4,10 @@ namespace Coffee_Shop_POS_Project;
 internal struct Product
 {
     // Fields
-    private string StringSize { get; }
-    private string ItemName { get; }
-    private int Price { get; set; }
-    private string Category { get; set; } // The category of drink or food this product belongs to
+    internal string StringSize { get; }
+    internal string ItemName { get; }
+    internal int Price { get; set; }
+    internal string Category { get; set; } // The category of drink or food this product belongs to
 
     // Constructor
     internal Product(DrinkSizes size, string itemName, int price, string category)
