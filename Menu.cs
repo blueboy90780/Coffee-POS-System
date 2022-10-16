@@ -1,65 +1,59 @@
 namespace Coffee_Shop_POS_Project;
 
-internal struct Menu //Displays the menu of food/drinks and prompting users for it
+// TODO: Implement this solution: https://learn.microsoft.com/en-us/dotnet/csharp/iterators
+
+internal static class Menu
 {
-    // Static Fields
-    private static Dictionary<string, Dictionary<string, (int, int, int)>> _drinksAvailable = null!;
-    private static Dictionary<string, Dictionary<string, (int, int, int)>> _dessertsAvailable = null!;
+    // Entire class simply consist of fields and getter methods. No other behavioural methods
 
-    // Constructor
-    static Menu()
-    {
-        DrinksAvailable = new Dictionary<string, Dictionary<string, (int, int, int)>>
-        {
-            ["Traditional Coffee"] = new Dictionary<string, (int, int, int)>
-            {
-                ["Iced Coffee with Condensed Milk"] = (29_000, 39_000, 45_000),
-                ["Iced Black Coffee"] = (29_000, 35_000, 39_000),
-                ["Iced White PHIN Coffee & Condensed Milk"] = (29_000, 39_000, 45_000)
-            },
-            ["PhinDi Coffee"] = new Dictionary<string, (int, int, int)>
-            {
-                ["Iced Coffee with Almond & Fresh Milk"] = (45_000, 49_000, 55_000),
-                ["Iced Coffee with Milk Foam"] = (45_000, 49_000, 55_000),
-                ["Iced Coffee with Chocolate"] = (45_000, 49_000, 55_000)
-            },
-            ["Tea"] = new Dictionary<string, (int, int, int)>
-            {
-                ["Tea with Lotus Seeds"] = (45_000, 55_000, 65_000),
-                ["Tea with Peach Jelly"] = (45_000, 55_000, 65_000),
-                ["Peach Tea with Lemongrass"] = (45_000, 55_000, 65_000),
-                ["Tea with Lychee Jelly"] = (45_000, 55_000, 65_000),
-                ["Green Tea with Red Bean"] = (45_000, 55_000, 65_000)
-            }
-        };
-        ;
-        DessertsAvailable = new Dictionary<string, Dictionary<string, (int, int, int)>>
-        {
-            ["Cakes"] = new Dictionary<string, (int, int, int)>
-            {
-                ["Banana Cake"] = (29_000, 0, 0),
-                ["Passion Fruit Cheese Cake"] = (29_000, 0, 0),
-                ["Coffee Cheese Cake"] = (29_000, 0, 0),
-                ["Tiramisu Cake"] = (35_000, 0, 0)
-            },
-            ["Mousse"] = new Dictionary<string, (int, int, int)>
-            {
-                ["Peach Mousse"] = (35_000, 0, 0),
-                ["Cocoa Mousse"] = (35_000, 0, 0)
-            }
-        };
-    }
+    #region Drinks
+    // Traditional Coffee
+    private static readonly Drinks IcedCoffeeWithCondensedMilk = new Drinks("Iced Coffee with Condensed Milk", new int[]{29_000, 39_000, 45_000});
+    private static readonly Drinks IcedBlackCoffee = new Drinks("Iced Black Coffee", new int[]{29_000, 39_000, 45_000});
+    private static readonly Drinks IcedWhitePhinCoffee = new Drinks("Iced White Phin Coffee & Condensed Milk", new int[]{29_000, 39_000, 45_000});
+    
+    // PhinDi Coffee
+    private static readonly Drinks IcedCoffeeWithAlmond = new Drinks("Iced Coffee with Almond & Fresh Milk", new int[]{45_000, 49_000, 55_000});
+    private static readonly Drinks IcedCoffeeWithMilk = new Drinks("Iced Coffee with Milk Foam", new int[]{45_000, 49_000, 55_000});
+    private static readonly Drinks IcedCoffeeWithChocolate = new Drinks("Iced Coffee with Chocolate", new int[]{45_000, 49_000, 55_000});
+    
+    // Teas 
+    private static readonly Drinks TeaWithLotusSeeds = new Drinks("Tea with Lotus Seeds", new int[]{45_000, 55_000, 65_000});
+    private static readonly Drinks TeaWithPeachJelly = new Drinks("Tea with Peach Jelly", new int[]{45_000, 55_000, 65_000});
+    private static readonly Drinks PeachTeaWithLemonGrass = new Drinks("Peach Tea with Lemon Grass", new int[]{45_000, 55_000, 65_000});
+    private static readonly Drinks TeaWithLycheeJelly = new Drinks("Tea with Lychee Jelly", new int[]{45_000, 55_000, 65_000});
+    #endregion
 
-    // Properties
-    internal static Dictionary<string, Dictionary<string, (int, int, int)>> DrinksAvailable
-    {
-        get => _drinksAvailable;
-        set => _drinksAvailable = value;
-    }
+    #region Food
+    // Pastries
+    private static readonly Food BananaCake = new Food("Banana Cake", 29_000);
+    private static readonly Food PassionFruitCheeseCake = new Food("Passion Fruit Cheese Cake", 29_000);
+    private static readonly Food CoffeeCheeseCake = new Food("Coffee Cheese Cake", 29_000);
+    private static readonly Food TiramisuCake = new Food("Tiramisu Cake", 35_000);
+    
+    // BreakSticks
+    private static readonly Food Pate = new Food("Pate", 19_000);
+    private static readonly Food ChickenAndCheese = new Food("Chicken & Cheese", 19_000);
+    #endregion
 
-    internal static Dictionary<string, Dictionary<string, (int, int, int)>> DessertsAvailable
-    {
-        get => _dessertsAvailable;
-        set => _dessertsAvailable = value;
-    }
+    #region Drink Categories
+    private static readonly Drinks[] TraditionalCoffee = { IcedCoffeeWithCondensedMilk, IcedBlackCoffee, IcedWhitePhinCoffee };
+    private static readonly Drinks[] PhinDi = { IcedCoffeeWithAlmond, IcedCoffeeWithMilk, IcedCoffeeWithChocolate };
+    private static readonly Drinks[] Teas = { TeaWithLotusSeeds, TeaWithPeachJelly, PeachTeaWithLemonGrass, TeaWithLycheeJelly };
+    #endregion
+
+    #region FoodCategory
+    private static readonly Food[] Pastries = { BananaCake, PassionFruitCheeseCake, CoffeeCheeseCake, TiramisuCake };
+    private static readonly Food[] BreakSticks = { Pate, ChickenAndCheese };
+    #endregion
+
+    #region Getter Methods + 2D Lists
+    internal static Drinks[][] DrinksAvailable { get; } = { TraditionalCoffee, PhinDi, Teas };
+    internal static Food[][] FoodAvailable { get; } = { Pastries, BreakSticks };
+    #endregion
+
+    #region Records
+    internal record Drinks(string ItemName, int[] Price);
+    internal record Food(string ItemName, int Price);
+    #endregion
 }
