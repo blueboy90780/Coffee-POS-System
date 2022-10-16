@@ -1,6 +1,6 @@
 namespace Coffee_Shop_POS_Project;
 
-public enum DrinkSizes
+internal enum DrinkSizes
 {
     // Where each assigned integer represents the position within the tuple
     Small = 0,

@@ -1,66 +1,74 @@
-using Coffee_Shop_POS_Project;
-using static System.Console;
+namespace Coffee_Shop_POS_Project;
 
-Product chosenProduct = GetCustomerDrinks();
-Console.WriteLine(chosenProduct);
-
-Product GetCustomerDrinks()
+class Program
 {
-    // Local Variables
-    var drinksAvailable = Menu.DrinksAvailable;
-    string drinksDisplay;
-    
-    // Prompt user for Drink Category
-    drinksDisplay = "";
-    for (int i = 0; i < drinksAvailable.Length; i++) drinksDisplay += $"\n{i} : {drinksAvailable[i]}";
-    WriteLine("Drink Type:" + drinksDisplay);
-    int drinkCategory = Convert.ToInt32(ReadLine());
-    
-    // Prompt user for specific drinks
-    drinksDisplay = "";
-    for (int i = 0; i < drinksAvailable[drinkCategory].Length; i++) drinksDisplay += $"\n{i} : {drinksAvailable[drinkCategory][i].ItemName}";
-    WriteLine($"{drinksAvailable[drinkCategory]} :" + drinksDisplay);
-    int drinkNumber = Convert.ToInt32(ReadLine());
-
-    // Prompt user for size of drink 
-    WriteLine("Size of Drink: ");
-    int sizeInput = Convert.ToInt32(ReadLine());
-    var drinkSize = sizeInput switch // Select size enum based on userInput
+    public static void Main(string[] args)
     {
-        0 => DrinkSizes.Small,
-        1 => DrinkSizes.Medium,
-        2 => DrinkSizes.Large,
-        _ => throw new ArgumentOutOfRangeException()
-    };
-    
-    // Returning the final Product Object
-    string drinkName = drinksAvailable[drinkCategory][drinkNumber].ItemName;
-    int drinkPrice = drinksAvailable[drinkCategory][drinkNumber].Price[(int) drinkSize];
-    return new Product(drinkSize, drinkName, drinkPrice);
-}
+        Product productChoice;
 
-Product GetCustomerFood()
-{
-    // Local Variables
-    var foodAvailable = Menu.FoodAvailable;
-    string foodDisplay;
-    int foodCategory;
-    int foodNumber;
-    
-    // Prompt user for Drink Category
-    foodDisplay = "";
-    for (int i = 0; i < foodAvailable.Length; i++) foodDisplay += $"\n{i} : {foodAvailable[i]}";
-    WriteLine("Drink Type:" + foodDisplay);
-    foodCategory = Convert.ToInt32(ReadLine());
-    
-    // Prompt user for specific drinks
-    foodDisplay = "";
-    for (int i = 0; i < foodAvailable[foodCategory].Length; i++) foodDisplay += $"\n{i} : {foodAvailable[foodCategory][i]}";
-    WriteLine("Drink Type:" + foodDisplay);
-    foodNumber = Convert.ToInt32(ReadLine());
-    
-    // Returning the final Product Object
-    string drinkName = foodAvailable[foodCategory][foodNumber].ItemName;
-    int drinkPrice = foodAvailable[foodCategory][foodNumber].Price;
-    return new Product(null, drinkName, drinkPrice);
+        Console.WriteLine("What are you adding?: \n1: Drink \n2: Food");
+        int userChoice = Convert.ToInt32(Console.ReadLine());
+
+        if (userChoice == 1) productChoice = GetCustomerDrinks();
+        else productChoice = GetCustomerFood();
+
+        Console.WriteLine(productChoice);
+    }
+
+    static Product GetCustomerDrinks()
+    {
+        // Variable
+        var availableDrinks = Menu.DrinksAvailable;
+        string userInput = "";
+
+        // Prompt user for drink category
+        for (int i = 0; i < availableDrinks.GroupsCollection.Count; i++) userInput += $"\n{i} : {availableDrinks.GroupsCollection[i].GroupName}";
+        Console.WriteLine("What type of drink would you like to add?" + userInput);
+        int chosenCategory = Convert.ToInt32(Console.ReadLine());
+        userInput = ""; //Reset userInput
+
+        // Prompt user for specific drink within that category
+        for (int i = 0; i < availableDrinks.GroupsCollection[chosenCategory].DrinksCollection.Count; i++) userInput += $"\n{i} : {availableDrinks.GroupsCollection[chosenCategory].DrinksCollection[i].ItemName}";
+        Console.WriteLine("What drinks would you like to add?" + userInput);
+        int chosenDrink = Convert.ToInt32(Console.ReadLine());
+
+        // Prompt user for drink size and assigns relevant drinkSize
+        Console.WriteLine("What's the size of your drink? \n0 : Small\n1 : Medium\n2 : Large");
+        int sizeInput = Convert.ToInt32(Console.ReadLine());
+        var drinkSize = sizeInput switch // Select size enum based on userInput
+        {
+            0 => DrinkSizes.Small,
+            1 => DrinkSizes.Medium,
+            2 => DrinkSizes.Large,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+
+        var itemName = availableDrinks.GroupsCollection[chosenCategory].DrinksCollection[chosenDrink].ItemName;
+        var price = availableDrinks.GroupsCollection[chosenCategory].DrinksCollection[chosenDrink].Price[(int) drinkSize];
+        var category = availableDrinks.GroupsCollection[chosenCategory].GroupName;
+        return new Product(drinkSize, itemName, price, category);
+    }
+
+    static Product GetCustomerFood()
+    {
+        // Variable
+        var availableFood = Menu.FoodAvailable;
+        string userInput = "";
+
+        // Prompt user for drink category
+        for (int i = 0; i < availableFood.GroupsCollection.Count; i++) userInput += $"\n{i} : {availableFood.GroupsCollection[i].GroupName}";
+        Console.WriteLine("What type of drink would you like to add?" + userInput);
+        int chosenCategory = Convert.ToInt32(Console.ReadLine());
+        userInput = ""; //Reset userInput
+
+        // Prompt user for specific drink within that category
+        for (int i = 0; i < availableFood.GroupsCollection[chosenCategory].FoodCollection.Count; i++) userInput += $"\n{i} : {availableFood.GroupsCollection[chosenCategory].FoodCollection[i].ItemName}";
+        Console.WriteLine("What drinks would you like to add?" + userInput);
+        int chosenFood = Convert.ToInt32(Console.ReadLine());
+
+        var itemName = availableFood.GroupsCollection[chosenCategory].FoodCollection[chosenFood].ItemName;
+        var price = availableFood.GroupsCollection[chosenCategory].FoodCollection[chosenFood].Price;
+        var category = availableFood.GroupsCollection[chosenCategory].GroupName;
+        return new Product(null, itemName, price, category);
+    }
 }

@@ -36,24 +36,29 @@ internal static class Menu
     private static readonly Food ChickenAndCheese = new Food("Chicken & Cheese", 19_000);
     #endregion
 
-    #region Drink Categories
-    private static readonly Drinks[] TraditionalCoffee = { IcedCoffeeWithCondensedMilk, IcedBlackCoffee, IcedWhitePhinCoffee };
-    private static readonly Drinks[] PhinDi = { IcedCoffeeWithAlmond, IcedCoffeeWithMilk, IcedCoffeeWithChocolate };
-    private static readonly Drinks[] Teas = { TeaWithLotusSeeds, TeaWithPeachJelly, PeachTeaWithLemonGrass, TeaWithLycheeJelly };
+    #region Drink Groups
+    private static readonly DrinksGroup TraditionalCoffee = new DrinksGroup("Traditional Coffee", new List<Drinks>() {IcedCoffeeWithCondensedMilk, IcedBlackCoffee, IcedWhitePhinCoffee});
+    private static readonly DrinksGroup PhinDi = new DrinksGroup("PhinDi Coffee", new List<Drinks>() {IcedCoffeeWithAlmond, IcedCoffeeWithMilk, IcedCoffeeWithChocolate});
+    private static readonly DrinksGroup Teas = new DrinksGroup("Teas", new List<Drinks>() {TeaWithLotusSeeds, TeaWithPeachJelly, PeachTeaWithLemonGrass, TeaWithLycheeJelly});
+    #endregion
+    
+    #region Food Groups
+    private static readonly FoodGroup Pastries = new FoodGroup("Pastries", new List<Food>() {BananaCake, PassionFruitCheeseCake, CoffeeCheeseCake, TiramisuCake});
+    private static readonly FoodGroup BreadSticks = new FoodGroup("BreadSticks", new List<Food>() {Pate, ChickenAndCheese});
     #endregion
 
-    #region FoodCategory
-    private static readonly Food[] Pastries = { BananaCake, PassionFruitCheeseCake, CoffeeCheeseCake, TiramisuCake };
-    private static readonly Food[] BreakSticks = { Pate, ChickenAndCheese };
-    #endregion
-
-    #region Getter Methods + 2D Lists
-    internal static Drinks[][] DrinksAvailable { get; } = { TraditionalCoffee, PhinDi, Teas };
-    internal static Food[][] FoodAvailable { get; } = { Pastries, BreakSticks };
+    #region Product Categories (Exposed to other Classes)
+    internal static DrinksCategory DrinksAvailable { get; } = new("Drinks", new List<DrinksGroup>() {TraditionalCoffee, PhinDi, Teas});
+    internal static FoodCategory FoodAvailable { get; } = new("Food", new List<FoodGroup>() {Pastries, BreadSticks});
     #endregion
 
     #region Records
     internal record Drinks(string ItemName, int[] Price);
     internal record Food(string ItemName, int Price);
+    internal record DrinksGroup(string GroupName, List<Drinks> DrinksCollection); // Accepts Drinks as a collection to allow users to \
+    // add their own drink group when needed
+    internal record FoodGroup(string GroupName, List<Food> FoodCollection);
+    internal record DrinksCategory(string ProductType, List<DrinksGroup> GroupsCollection);
+    internal record FoodCategory(string ProductType, List<FoodGroup> GroupsCollection);
     #endregion
 }
