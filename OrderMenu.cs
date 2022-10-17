@@ -2,41 +2,35 @@ namespace Coffee_Shop_POS_Project;
 
 public enum UserOptions
 {
+    Display = 0,
     Add = 1,
     Remove = 2,
     Replace = 3,
-    Clear = 4,
+    Clear = 4, 
     Proceed = 5,
-    AddItemToMenu  = 6,
-    RemoveItemFromMenu = 7,
-    EndDay = 8
 }
 
-// Made into a regular class to take account of OrderMenu to make new OrderMenu for different Customers
-internal sealed class OrderMenu
+// Every customer that comes through will create a new instance of OrderMenu. Every orders completed will generate a new order on the stack, with the previous order + customer removed by the GC
+internal struct OrderMenu
 {
     // Field
     private static List<Product> ListOfProduct { get; set; } = new();
-    // private UserOptions options; 
-    
+
     // Behaviours
+    
+    // Option 0: Display the menu
+    internal void DisplayMenu()
+    {
+        foreach (var items in ListOfProduct) Console.WriteLine(items.ToString());
+    }
+    
     // Option 1: Add a product to ListOfProduct
     internal void AddProduct()
     {
-        Product productChoice;
-        
-        // Prompts for type of item
-        Console.WriteLine("What are you adding?: \n1: Drink \n2: Food");
-        int userChoice = Convert.ToInt32(Console.ReadLine());
-        
-        // Gets Food or Drinks depending ont userChoice
-        if (userChoice == 1) productChoice = GetCustomerDrinks();
-        else productChoice = GetCustomerFood();
-        
-        // Appending to order list
+        Product productChoice = ProductChoice();
         ListOfProduct.Add(productChoice);
     }
-    
+
     // Options 2: Remove a product from ListOfProduct
     internal void RemoveAProduct()
     {
@@ -70,18 +64,39 @@ internal sealed class OrderMenu
 
         int indexToReplace = Convert.ToInt32(Console.ReadLine());
         ListOfProduct.Remove(ListOfProduct[indexToReplace]);
-        if (IsProductADrink(ListOfProduct[indexToReplace])) itemToReplace = GetCustomerDrinks();
-        else itemToReplace = GetCustomerFood();
-        ListOfProduct.Insert(indexToReplace,itemToReplace);
+        ListOfProduct.Insert(indexToReplace,ProductChoice());
     }
     
     // Option 4: Clear the entire orderMenu
     internal void ClearOrderMenu() => ListOfProduct.Clear();
     
     // Option 5: Proceed with the order
-    
+    internal bool ProceedOrder()
+    {
+        int price = CalculcateTotalCost();
+        if (ListOfProduct.Count > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     // Miscellaneous Methods
-    // TODO: Decide later if these needs to be static
+    private static Product ProductChoice()
+    {
+        Product productChoice;
+        // Prompts for type of item
+        Console.WriteLine("What are you adding?: \n1: Drink \n2: Food");
+        int userChoice = Convert.ToInt32(Console.ReadLine());
+
+        // Gets Food or Drinks depending ont userChoice
+        if (userChoice == 1) productChoice = GetCustomerDrinks();
+        else productChoice = GetCustomerFood();
+        return productChoice;
+    }
     internal static Product GetCustomerDrinks()
     {
         // Variable
@@ -151,5 +166,13 @@ internal sealed class OrderMenu
             }
 
         return returnState;
+    }
+    internal static int CalculcateTotalCost()
+    {
+        int price = 0;
+        
+        foreach (var item in ListOfProduct) price += item.Price; // TODO: Looks like LINQ stuff, look up how you can do this using LINQ
+
+        return price;
     }
 }
