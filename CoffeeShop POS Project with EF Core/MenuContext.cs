@@ -9,8 +9,8 @@ internal class MenuContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        var workingDirectory = Environment.CurrentDirectory;
-        var projectDirectory = Directory.GetParent(workingDirectory)!.Parent!.Parent!.FullName!;
-        optionsBuilder.UseSqlite($"Data Source={projectDirectory}" + @"\CoffeeShopDB.db");
+        // var workingDirectory = Environment.CurrentDirectory;
+        // var projectDirectory = Directory.GetParent(workingDirectory)!.Parent!.Parent!.FullName!;
+        optionsBuilder.UseSqlite(@"Data Source=D:\CoffeeShopDB.db");
     }
 }
