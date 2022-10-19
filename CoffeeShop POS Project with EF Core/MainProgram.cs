@@ -2,7 +2,7 @@
 
 namespace CoffeeShop_POS_Project_with_EF_Core;
 
-internal static class Program
+internal static class MainProgram
 {
     public static void Main()
     {
