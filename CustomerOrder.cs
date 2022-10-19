@@ -20,17 +20,14 @@ internal struct CustomerOrder
     }
     #endregion
 
-    internal Dictionary<string, (int, int, int)> AddCustomerOrder()
+    internal KeyValuePair<string, (int, int, int)> PreCustomerOrder()
     {
-        // Variables
-        int userChoice;
-        string userChoiceString;
-        string userChoiceString2;
-
+        #region PromptUserInput
         Console.WriteLine("Select the type of product to add: \n1)Drinks \n2)Desserts");
-        userChoice = Convert.ToInt32(Console.ReadLine());
+        int userChoice = Convert.ToInt32(Console.ReadLine());
 
         // Checks for userChoice
+        // Accessing either of these properties will invoke the static constructor, instantiating both relevant fields
         if (userChoice == 1)
         {
             ProductChoice = Menu.DrinksAvailable;
@@ -44,14 +41,29 @@ internal struct CustomerOrder
 
         Console.WriteLine($"Type out {ProductType} to add");
         foreach (var keyValue in ProductChoice) Console.WriteLine(keyValue.Key);
-        userChoiceString = Console.ReadLine(); // Selects a sub-dict (e.g Traditional Coffee, Phin, Tea)
+        string userChoiceString = Console.ReadLine(); // Selects a sub-dict (e.g Traditional Coffee, Phin, Tea)
 
         Console.WriteLine($"Type out {ProductChoice[userChoiceString]} to add");
         foreach (var keyValue in ProductChoice[userChoiceString]) Console.WriteLine(keyValue.Key);
-        userChoiceString2 = Console.ReadLine(); // Selects the last dict (e.g Iced Coffee with Condensed Milk)
+        string userChoiceString2 = Console.ReadLine(); // Selects the last dict (e.g Iced Coffee with Condensed Milk)
 
         Console.WriteLine("Item has been successfully added, returning to menu order screen...");
-        return new Dictionary<string, (int, int, int)> { userChoiceString2, ProductChoice[userChoiceString][userChoiceString2] };
+        #endregion
+        
+        // TODO: Shit code, find a way to make this better without having to rely on loops
+        #region ExtractingKeyValuePair
+
+        KeyValuePair<string, (int, int, int)> result;
+        foreach (var keyValue in ProductChoice[userChoiceString])
+        {
+            if (keyValue.Equals(ProductChoice[userChoiceString]))
+            {
+                return keyValue;
+            }
+        }
+
+        return new KeyValuePair<string, (int, int, int)>();
+
+        #endregion
     }
-}
 }

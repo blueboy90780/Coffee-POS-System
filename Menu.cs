@@ -6,7 +6,7 @@ internal struct Menu //Displays the menu of food/drinks and prompting users for 
     private static Dictionary<string, Dictionary<string, (int, int, int)>> _drinksAvailable = null!;
     private static Dictionary<string, Dictionary<string, (int, int, int)>> _dessertsAvailable = null!;
 
-    // Constructor
+    // Constructor, instantiates both Drinks
     static Menu()
     {
         DrinksAvailable = new Dictionary<string, Dictionary<string, (int, int, int)>>
