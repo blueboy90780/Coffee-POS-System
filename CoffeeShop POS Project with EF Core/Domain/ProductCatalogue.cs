@@ -14,5 +14,5 @@ public class ProductCatalogue
     [MaxLength(100)] public string? VNname { get; set; }
 
     public bool Recommended { get; set; }
-    public List<ProductVariants> ProductVariantsList { get; set; } // Creates a key I think
+    public List<ProductVariants> ProductVariantsList { get; set; } // Responsible for creading the foreign key
 }

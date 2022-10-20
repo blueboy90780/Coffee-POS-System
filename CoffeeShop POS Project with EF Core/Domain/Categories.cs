@@ -7,7 +7,7 @@ namespace CoffeeShop_POS_Project_with_EF_Core.Domain;
 internal class Categories
 {
     [MaxLength(100)] public int CategoriesId { get; set; }
-    
+
     // Limiting to a select few choice of pre-defined categories
     public string CategoryName { get; set; }
     public bool? IceAvailable { get; set; }
