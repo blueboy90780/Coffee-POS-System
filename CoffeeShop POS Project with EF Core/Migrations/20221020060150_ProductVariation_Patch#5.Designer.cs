@@ -3,6 +3,7 @@ using System;
 using CoffeeShop_POS_Project_with_EF_Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
 {
     [DbContext(typeof(MenuContext))]
-    partial class MenuContextModelSnapshot : ModelSnapshot
+    [Migration("20221020060150_ProductVariation_Patch#5")]
+    partial class ProductVariation_Patch5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
@@ -34,20 +36,6 @@ namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
                     b.HasKey("CategoriesId");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("CoffeeShop_POS_Project_with_EF_Core.Domain.CustomerOrder", b =>
-                {
-                    b.Property<int>("CustomerOrderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<uint>("Quantity")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("CustomerOrderId");
-
-                    b.ToTable("CustomerOrder");
                 });
 
             modelBuilder.Entity("CoffeeShop_POS_Project_with_EF_Core.Domain.ProductCatalogue", b =>
@@ -85,9 +73,6 @@ namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("CustomerOrderId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<uint>("Price")
                         .HasColumnType("INTEGER");
 
@@ -101,8 +86,6 @@ namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
                         .HasColumnType("REAL");
 
                     b.HasKey("ProductVariantsId");
-
-                    b.HasIndex("CustomerOrderId");
 
                     b.HasIndex("ProductCatalogueId");
 
@@ -118,10 +101,6 @@ namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
 
             modelBuilder.Entity("CoffeeShop_POS_Project_with_EF_Core.Domain.ProductVariants", b =>
                 {
-                    b.HasOne("CoffeeShop_POS_Project_with_EF_Core.Domain.CustomerOrder", null)
-                        .WithMany("ItemOrdered")
-                        .HasForeignKey("CustomerOrderId");
-
                     b.HasOne("CoffeeShop_POS_Project_with_EF_Core.Domain.ProductCatalogue", "ProductCatalogue")
                         .WithMany("ProductVariantsList")
                         .HasForeignKey("ProductCatalogueId")
@@ -134,11 +113,6 @@ namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
             modelBuilder.Entity("CoffeeShop_POS_Project_with_EF_Core.Domain.Categories", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("CoffeeShop_POS_Project_with_EF_Core.Domain.CustomerOrder", b =>
-                {
-                    b.Navigation("ItemOrdered");
                 });
 
             modelBuilder.Entity("CoffeeShop_POS_Project_with_EF_Core.Domain.ProductCatalogue", b =>

@@ -8,6 +8,7 @@ internal class MenuContext : DbContext
     public DbSet<ProductCatalogue> Products { get; set; }
     public DbSet<Categories> Categories { get; set; }
     public DbSet<ProductVariants> ProductVariants { get; set; }
+    public DbSet<CustomerOrder> CustomerOrders { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
