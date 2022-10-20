@@ -4,29 +4,28 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoffeeShop_POS_Project_with_EF_Core.Domain;
 
-[Table("Products")]
-internal class Product
+[Table("ProductCatalogue")]
+public class ProductCatalogue
 {
     public int ProductId { get; set; }
 
-    [MaxLength(100)] public string VNname { get; set; }
-
     [MaxLength(100)] [Unicode(false)] public string ENname { get; set; }
 
+    [MaxLength(100)] public string? VNname { get; set; }
+
     public bool Recommended { get; set; }
-    public Size? ProductSize { get; set; }
-    public List<ProductVariants> ProductVariantsList { get; set; }
+    public List<ProductVariants> ProductVariantsList { get; set; } // TODO: Look into this at DataGrip
 }
 
 [Table("ProductVariants")]
-internal class ProductVariants
+public class ProductVariants
 {
-    public int Id { get; set; }
-    public Product Product { get; set; }
+    public int ProductVariantsId { get; set; }
+    public ProductCatalogue ProductCatalogue { get; set; }
     
     // Each product will have it's own individual price and corresponding size and volume. Thereby accounting for products the dynamic size and volume of Each product 
-    [Required] public int Price { get; set; }
-    public Size? Size{ get; set; }
+    [Required] public uint Price { get; set; }
+    public Size? ProductSize { get; set; }
     public float? Volume { get; set; }
 }
 

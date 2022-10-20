@@ -3,6 +3,7 @@ using System;
 using CoffeeShop_POS_Project_with_EF_Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
 {
     [DbContext(typeof(MenuContext))]
-    partial class MenuContextModelSnapshot : ModelSnapshot
+    [Migration("20221020032218_ProductVariation_Patch#3")]
+    partial class ProductVariation_Patch3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
@@ -24,9 +26,8 @@ namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("CategoryName")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("CategoryName")
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool?>("IceAvailable")
                         .HasColumnType("INTEGER");
@@ -43,6 +44,9 @@ namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int?>("CategoriesId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("Catgegory")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ENname")
@@ -72,7 +76,7 @@ namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<uint>("Price")
+                    b.Property<int>("Price")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("ProductId")

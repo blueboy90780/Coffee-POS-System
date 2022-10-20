@@ -5,8 +5,8 @@ namespace CoffeeShop_POS_Project_with_EF_Core;
 
 internal class MenuContext : DbContext
 {
-    public DbSet<Product> Products { get; set; }
-    public DbSet<Category> Categories { get; set; }
+    public DbSet<ProductCatalogue> Products { get; set; }
+    public DbSet<Categories> Categories { get; set; }
     public DbSet<ProductVariants> ProductVariants { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
