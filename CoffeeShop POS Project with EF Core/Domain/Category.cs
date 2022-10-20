@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CoffeeShop_POS_Project_with_EF_Core;
+namespace CoffeeShop_POS_Project_with_EF_Core.Domain;
 
 [Table("Categories")]
 internal class Category
