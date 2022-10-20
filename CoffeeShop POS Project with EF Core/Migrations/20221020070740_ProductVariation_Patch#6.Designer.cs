@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
 {
-    [DbContext(typeof(MenuContext))]
+    [DbContext(typeof(DatabaseModel))]
     [Migration("20221020070740_ProductVariation_Patch#6")]
     partial class ProductVariation_Patch6
     {
