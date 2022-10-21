@@ -3,6 +3,7 @@ using System;
 using CoffeeShop_POS_Project_with_EF_Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
 {
     [DbContext(typeof(DatabaseModel))]
-    partial class MenuContextModelSnapshot : ModelSnapshot
+    [Migration("20221021074349_Database_Patch#3")]
+    partial class Database_Patch3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
@@ -57,7 +59,7 @@ namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
 
                     b.HasIndex("ProductPropertiesId");
 
-                    b.ToTable("Customer Order Menu");
+                    b.ToTable("CustomerOrder");
                 });
 
             modelBuilder.Entity("CoffeeShop_POS_Project_with_EF_Core.Domain.Product", b =>
@@ -86,7 +88,7 @@ namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
 
                     b.HasIndex("CategoriesId");
 
-                    b.ToTable("Product Catalogue");
+                    b.ToTable("ProductCatalogue");
                 });
 
             modelBuilder.Entity("CoffeeShop_POS_Project_with_EF_Core.Domain.ProductProperties", b =>
@@ -111,7 +113,7 @@ namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("Product Properties");
+                    b.ToTable("ProductVariants");
                 });
 
             modelBuilder.Entity("CoffeeShop_POS_Project_with_EF_Core.Domain.CustomerOrder", b =>

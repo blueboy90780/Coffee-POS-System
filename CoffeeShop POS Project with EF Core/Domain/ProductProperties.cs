@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CoffeeShop_POS_Project_with_EF_Core.Domain;
 
-[Table("ProductVariants")]
-public class ProductVariants
+[Table("Product Properties")]
+public class ProductProperties
 {
-    public int ProductVariantsId { get; set; }
-    public ProductCatalogue ProductCatalogue { get; set; }
-    public List<CustomerOrder> ProductNumber { get; set; } // Creates a foreign key on CustomerOrder() I think
+    public int ProductPropertiesId { get; set; }
+    public Product Product { get; set; }
+    // public List<CustomerOrder> ProductNumber { get; set; }
 
     // Each product will have it's own individual price and corresponding size and volume. Thereby accounting for products the dynamic size and volume of Each product 
     [Required] public uint Price { get; set; }
