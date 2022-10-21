@@ -7,6 +7,11 @@ namespace CoffeeShop_POS_Project_with_EF_Core.Domain;
 [Table("Product Catalogue")]
 public class Product
 {
+    public Product()
+    {
+        ProductVariantsList = new List<ProductProperties>();
+    }
+
     //Product ID
     public int ProductId { get; set; }
 
@@ -17,6 +22,6 @@ public class Product
     public bool Recommended { get; set; } // Recommended or not
     
     // Foreign Key Relationship
-    public Categories Category { get; set; } //<-- navigation property
-    public int CategoryId { get; set; }
+    public Categories Categories { get; set; } //<-- navigation property
+    public int CategoriesId { get; set; }
 }

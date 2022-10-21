@@ -3,6 +3,7 @@ using System;
 using CoffeeShop_POS_Project_with_EF_Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
 {
     [DbContext(typeof(DatabaseModel))]
-    partial class MenuContextModelSnapshot : ModelSnapshot
+    [Migration("20221021095246_Main_Patch#1")]
+    partial class Main_Patch1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
@@ -21,13 +23,14 @@ namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
                 {
                     b.Property<int>("CategoriesId")
                         .ValueGeneratedOnAdd()
+                        .HasMaxLength(100)
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CategoryName")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("IceAvailable")
+                    b.Property<bool?>("IceAvailable")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("CategoriesId");
@@ -65,7 +68,7 @@ namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CategoriesId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ENname")
@@ -83,7 +86,8 @@ namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
 
                     b.HasKey("ProductId");
 
-                    b.HasIndex("CategoriesId");
+                    b.HasIndex("CategoryId")
+                        .IsUnique();
 
                     b.ToTable("Product Catalogue");
                 });
@@ -134,13 +138,13 @@ namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
 
             modelBuilder.Entity("CoffeeShop_POS_Project_with_EF_Core.Domain.Product", b =>
                 {
-                    b.HasOne("CoffeeShop_POS_Project_with_EF_Core.Domain.Categories", "Categories")
-                        .WithMany("Products")
-                        .HasForeignKey("CategoriesId")
+                    b.HasOne("CoffeeShop_POS_Project_with_EF_Core.Domain.Categories", "Category")
+                        .WithOne("Products")
+                        .HasForeignKey("CoffeeShop_POS_Project_with_EF_Core.Domain.Product", "CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Categories");
+                    b.Navigation("Category");
                 });
 
             modelBuilder.Entity("CoffeeShop_POS_Project_with_EF_Core.Domain.ProductProperties", b =>
@@ -156,7 +160,8 @@ namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
 
             modelBuilder.Entity("CoffeeShop_POS_Project_with_EF_Core.Domain.Categories", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("Products")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("CoffeeShop_POS_Project_with_EF_Core.Domain.Product", b =>
