@@ -13,11 +13,11 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.10" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.10"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="AppLogic" />
+        <Folder Include="AppLogic"/>
     </ItemGroup>
 
 </Project>

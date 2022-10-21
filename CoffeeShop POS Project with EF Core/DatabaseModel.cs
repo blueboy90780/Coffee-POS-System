@@ -14,6 +14,7 @@ internal class DatabaseModel : DbContext
     {
         // var workingDirectory = Environment.CurrentDirectory;
         // var projectDirectory = Directory.GetParent(workingDirectory)!.Parent!.Parent!.FullName!;
-        optionsBuilder.UseSqlite(@"Data Source=D:\CoffeeShopDB.db").UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+        optionsBuilder.UseSqlite(@"Data Source=D:\CoffeeShopDB.db")
+            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
     }
 }

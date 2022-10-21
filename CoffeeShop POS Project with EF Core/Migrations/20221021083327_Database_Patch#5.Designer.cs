@@ -3,6 +3,7 @@ using System;
 using CoffeeShop_POS_Project_with_EF_Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
 {
     [DbContext(typeof(DatabaseModel))]
-    partial class MenuContextModelSnapshot : ModelSnapshot
+    [Migration("20221021083327_Database_Patch#5")]
+    partial class Database_Patch5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
@@ -66,7 +68,7 @@ namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int?>("CategoriesId")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ENname")
@@ -84,7 +86,7 @@ namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
 
                     b.HasKey("ProductId");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoriesId");
 
                     b.ToTable("Product Catalogue");
                 });
@@ -135,13 +137,9 @@ namespace CoffeeShop_POS_Project_with_EF_Core.Migrations
 
             modelBuilder.Entity("CoffeeShop_POS_Project_with_EF_Core.Domain.Product", b =>
                 {
-                    b.HasOne("CoffeeShop_POS_Project_with_EF_Core.Domain.Categories", "Category")
+                    b.HasOne("CoffeeShop_POS_Project_with_EF_Core.Domain.Categories", null)
                         .WithMany("Products")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Category");
+                        .HasForeignKey("CategoriesId");
                 });
 
             modelBuilder.Entity("CoffeeShop_POS_Project_with_EF_Core.Domain.ProductProperties", b =>
