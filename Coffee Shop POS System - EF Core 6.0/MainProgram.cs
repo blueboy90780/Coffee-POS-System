@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
+using System.Diagnostics;
 using Coffee_Shop_POS_System___EF_Core_6._0.Domain;
 
 namespace Coffee_Shop_POS_System___EF_Core_6._0;
@@ -38,8 +39,8 @@ This current state (beta) does not have any UI element nor does it have any AI e
             {
                 case (int)UserOptions.Add:
                     // Prompts for user what to choose
-                    Product product = PromptForItem(database);
-                    Console.WriteLine($"The product is: {product.ENname}");
+                    var product = PromptForItem(database);
+                    Console.WriteLine($"The product is: {product.Item2.ENname} ({product.Item1.ProductSize})");
                     break;
                 case (int)UserOptions.Delete:
                 // Do something
@@ -60,7 +61,7 @@ This current state (beta) does not have any UI element nor does it have any AI e
         Console.WriteLine("Day Ended, generating report...");
     }
 
-    private static Product PromptForItem(DatabaseModel database)
+    private static (ProductProperties, Product) PromptForItem(DatabaseModel database)
     {
         // Instance Variable
         var indexNumber = 0;
@@ -96,28 +97,47 @@ This current state (beta) does not have any UI element nor does it have any AI e
         var chosenProductString = availableProducts[productNumber];
     
         // Gets the product the user has chosen
-        var chosenProduct = availableProductRecords.Single(x => x.ENname == chosenProductString);
+        Product chosenProduct = availableProductRecords.Single(x => x.ENname == chosenProductString);
         
         // Gets the record with the product's variation
-        var productVariation = database.ProductVariants.Single(x => x.ProductId == chosenProduct.ProductId);
+        var productVariation = database.ProductVariants.Where(x => x.ProductId == chosenProduct.ProductId).ToList(); // 3 records stored
         
-        // Ask for user input
-        Console.WriteLine("Which product property is ");
-        
-        if (productVariation.ProductSize != null)
+        // Local Variables
+        uint productPrice = 0;
+        Size? productSize = null;
+
+        // Checks if the product has sizes
+        if (productVariation.First().ProductSize != null)
         {
-            switch ((int) productVariation.ProductSize)
+            // Ask for user input
+            Console.WriteLine("The available sizes are: \n1: Small \n2: Medium \n3: Large");
+            Console.Write("Size: ");
+            Size chosenSize = (Size) Convert.ToInt32(Console.ReadLine());
+
+            switch (chosenSize)
             {
-                case 0:
+                case Size.Small:
+                    productPrice = productVariation.First().Price;
+                    productSize = productVariation.First().ProductSize;
                     break;
-                case 1:
+                case Size.Medium:
+                    productPrice = productVariation.ElementAt((int) Size.Medium).Price;
+                    productSize = productVariation.ElementAt((int) Size.Medium).ProductSize;
                     break;
-                case 2:
+                case Size.Large:
+                    productPrice = productVariation.ElementAt((int) Size.Large).Price;
+                    productSize = productVariation.ElementAt((int) Size.Large).ProductSize;
+                    break;
+                default:
+                    Console.WriteLine("Only numbers between 1-3 are valid");
                     break;
             }
-        }
 
-        return chosenProduct;
+        }
+        ProductProperties productProperty = new ProductProperties { Price = productPrice, ProductSize = productSize };
+        Product returnProduct = new Product { ENname = chosenProductString, Categories = database.Categories.Single(x => x.CategoriesId == categoryNumber) };
+
+        return (productProperty, returnProduct);
     }
 }
 
