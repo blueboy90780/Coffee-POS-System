@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Coffee_Shop_POS_System___EF_Core_6._0.Migrations
 {
     [DbContext(typeof(DatabaseModel))]
-    [Migration("20221022081820_Patch#2")]
-    partial class Patch2
+    [Migration("20221022102850_Patch#1")]
+    partial class Patch1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

@@ -4,7 +4,7 @@
 
 namespace Coffee_Shop_POS_System___EF_Core_6._0.Migrations
 {
-    public partial class Patch2 : Migration
+    public partial class InitialSetup : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

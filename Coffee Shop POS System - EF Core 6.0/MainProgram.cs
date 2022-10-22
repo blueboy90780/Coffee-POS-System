@@ -36,7 +36,7 @@ This current state (beta) does not have any UI element nor does it have any AI e
             // Displays all the items in the current order menu
             var itemName = database.CustomerOrders.Select(x => x.Product.ENname);
             var itemPrice = database.CustomerOrders.Select(x => x.ProductProperties.Price);
-
+            
             for (int orderNumber = 1; orderNumber < database.CustomerOrders.Count(); orderNumber++)
             {
                 Console.WriteLine($"{orderNumber}: {itemName.ElementAt(orderNumber)} \t {itemPrice.ElementAt(orderNumber)}");
@@ -53,9 +53,14 @@ This current state (beta) does not have any UI element nor does it have any AI e
                     
                     // Prompts for user input
                     var productSet = PromptForItem(database);
-                    database.CustomerOrders.Add(new CustomerOrder()
-                        { Product = productSet.Item2, ProductProperties = productSet.Item1, ProductId = productSet.Item2.ProductId, ProductPropertiesId = productSet.Item1.ProductPropertiesId});
+                    
+                    // Adds a new entity to DBSet
+                    database.CustomerOrders.Add(new CustomerOrder(productSet.Item2, productSet.Item1));
+                    
+                    // Saves changes
                     database.SaveChanges();
+                    
+                    // Write out confirmation message
                     Console.WriteLine($"\nAdded product {productSet.Item2.ENname} ({productSet.Item1.ProductSize}) to order menu");
                     break;
                 
@@ -79,11 +84,23 @@ This current state (beta) does not have any UI element nor does it have any AI e
                     // Prompt user for item
                     Console.WriteLine("Which product to replace?");
                     Console.Write("Item Number: ");
-                    uint replaceNumber = Convert.ToUInt32(Console.ReadLine());
+                    uint replaceId = Convert.ToUInt32(Console.ReadLine());
                     
-                    database.CustomerOrders.Remove(database.CustomerOrders.Find(replaceNumber) ?? throw new InvalidOperationException());
+                    // Gets the record the user wants to change
+                    var recordToChange = database.CustomerOrders.Find(replaceId);
                     
-                    // TODO: Finish this option
+                    // Prompts user the product to replace with
+                    Console.WriteLine("What product would you like to replace the current product with?");
+                    var newProduct = PromptForItem(database);
+                    
+                    // Updates the Order Menu properties
+                    recordToChange!.Product = newProduct.Item2;
+                    recordToChange!.ProductProperties = newProduct.Item1;
+
+                    database.SaveChanges();
+                    
+                    Console.WriteLine("Change applied");
+                    
                     break;
                 
                 // Proceed with the customer Order
