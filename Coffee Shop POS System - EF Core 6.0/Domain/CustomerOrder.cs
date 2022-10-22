@@ -7,14 +7,19 @@ public class CustomerOrder
 {
     // DBContext Properties
     public int CustomerOrderId { get; set; }
-    public uint Quantity { get; set; }
     
     // Foreign Key Relationship
-    public Product Product { get; set; } // For product name as well as 
-    public ProductProperties ProductProperties { get; set; } // For pricing and ice information
+    public Product Product { get; set; }
+    public ProductProperties ProductProperties { get; set; }
     public int ProductId { get; set; }
     public int ProductPropertiesId { get; set; }
 
     // Other Properties
     [NotMapped] public uint TotalCost { get; set; } // Property to hold the total cost of ItemOrdered
+    
+    // Counts how many of each product there is
+    public uint CountProduct()
+    {
+        throw new NotImplementedException();
+    }
 }

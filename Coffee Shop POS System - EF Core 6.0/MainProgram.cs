@@ -13,41 +13,84 @@ internal class MainProgram
         var userChoice = 0;
         var customerNumber = 1;
 
+        #region Start Print Output
         Console.WriteLine(@"Welcome to David's Project #1: Coffee Shop POS System
 This current state (beta) does not have any UI element nor does it have any AI elements. All inputs are to be manually given by the user (employee) for another customer");
 
+        Console.WriteLine("Options: " +
+                          $"\n{(int) UserOptions.Add}: Add an item to Customer Order" +
+                          $"\n{(int) UserOptions.Delete}: Delete an item from Customer Order" +
+                          $"\n{(int) UserOptions.Replace}: Replace an item in Customer Order" +
+                          $"\n{(int) UserOptions.Proceed}: Proceed with the Order" +
+                          $"\n{(int) UserOptions.EndDay}: End day and generate a report for the day");
+        #endregion
 
         while (userChoice != (int)UserOptions.EndDay)
         {
+            // Display Customer Number
+            Console.WriteLine($"\nCustomer #{customerNumber}");
             
-            Console.WriteLine($"Customer #{customerNumber}");
-
-            // Provides the options
-            Console.WriteLine("Options: " +
-                              $"\n{(int) UserOptions.Add}: Add an item to Customer Order" +
-                              $"\n{(int) UserOptions.Delete}: Delete an item from Customer Order" +
-                              $"\n{(int) UserOptions.Replace}: Replace an item in Customer Order" +
-                              $"\n{(int) UserOptions.Proceed}: Proceed with the Order" +
-                              $"\n{(int) UserOptions.EndDay}: End day and generate a report for the day");
-            Console.Write("Option: ");
-            userChoice = Convert.ToInt32(Console.ReadLine());
-
             // Connects to the database
             using var database = new DatabaseModel();
             
+            // Displays all the items in the current order menu
+            var itemName = database.CustomerOrders.Select(x => x.Product.ENname);
+            var itemPrice = database.CustomerOrders.Select(x => x.ProductProperties.Price);
+
+            for (int orderNumber = 1; orderNumber < database.CustomerOrders.Count(); orderNumber++)
+            {
+                Console.WriteLine($"{orderNumber}: {itemName.ElementAt(orderNumber)} \t {itemPrice.ElementAt(orderNumber)}");
+            }
+            
+            // Get Options
+            Console.Write("Option: ");
+            userChoice = Convert.ToInt32(Console.ReadLine());
+            
             switch (userChoice)
             {
+                // Adds an Item to Order Menu
                 case (int)UserOptions.Add:
-                    // Prompts for user what to choose
-                    var product = PromptForItem(database);
-                    Console.WriteLine($"The product is: {product.Item2.ENname} ({product.Item1.ProductSize})");
+                    
+                    // Prompts for user input
+                    var productSet = PromptForItem(database);
+                    database.CustomerOrders.Add(new CustomerOrder()
+                        { Product = productSet.Item2, ProductProperties = productSet.Item1, ProductId = productSet.Item2.ProductId, ProductPropertiesId = productSet.Item1.ProductPropertiesId});
+                    database.SaveChanges();
+                    Console.WriteLine($"\nAdded product {productSet.Item2.ENname} ({productSet.Item1.ProductSize}) to order menu");
                     break;
+                
+                // Deletes an Item to Order Menu
                 case (int)UserOptions.Delete:
-                // Do something
-                case (int)UserOptions.Replace: // Delete and adding combined
-                // Do something
+                    
+                    // Prompt user for item
+                    Console.WriteLine("Which product to remove?");
+                    Console.Write("Item Number: ");
+                    int deleteNumber = Convert.ToInt32(Console.ReadLine());
+                    
+                    database.CustomerOrders.Remove(database.CustomerOrders.Find(deleteNumber) ?? throw new InvalidOperationException());
+
+                    database.SaveChanges();
+                    
+                    Console.WriteLine($"Item Number {deleteNumber} has been deleted");
+                    break;
+                
+                // Replaces (delete and add at specific index) to Order Menu
+                case (int)UserOptions.Replace:
+                    // Prompt user for item
+                    Console.WriteLine("Which product to replace?");
+                    Console.Write("Item Number: ");
+                    uint replaceNumber = Convert.ToUInt32(Console.ReadLine());
+                    
+                    database.CustomerOrders.Remove(database.CustomerOrders.Find(replaceNumber) ?? throw new InvalidOperationException());
+                    
+                    // TODO: Finish this option
+                    break;
+                
+                // Proceed with the customer Order
                 case (int)UserOptions.Proceed:
-                // Do something
+                    break; // Breaks the switch statement to increment customerNumber
+                
+                // Ends the day
                 case (int)UserOptions.EndDay:
                     break; // The statement "userChoice != (int) UserOptions.EndDay" gets evaluated to true false which will automatically break the loop
                 default:
