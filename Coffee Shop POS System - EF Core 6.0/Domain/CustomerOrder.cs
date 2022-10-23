@@ -9,21 +9,21 @@ public class CustomerOrder
     public int CustomerOrderId { get; set; }
     public int Quantity { get; set; }
 
-    // One (Customer Order Key) to Many (Prodcut Records)
-    public List<Product> Product { get; set; }
-    public List<ProductProperties> ProductProperties { get; set; }
+    // One (Customer Order Key) to One (Prodcut Records)
+    public Product Product { get; set; }
+    public ProductProperties ProductProperties { get; set; }
 
     // Class Data
     [NotMapped] public uint TotalCost { get; set; } // Property to hold the total cost of ItemOrdered
     
     // Class Behaviour
-    public uint CountProduct()
-    {
-        throw new NotImplementedException();
-    }
+    //public uint CountProduct()
+    //{
+    //    throw new NotImplementedException();
+    //}
 
-    public void IncrementQuantity()
-    {
-        Quantity++;
-    }
+    //public void IncrementQuantity()
+    //{
+    //    Quantity++;
+    //}
 }

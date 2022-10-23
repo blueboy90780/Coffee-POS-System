@@ -31,8 +31,8 @@ This current state (beta) does not have any UI element nor does it have any AI e
             using var database = new DatabaseModel();
             
             // Displays all the items in the current order menu
-            var itemName = database.CustomerOrders.Select(x => x.Product.Select(x => x.ENname));
-            var itemPrice = database.CustomerOrders.Select(x => x.ProductProperties.Select(x => x.Price));
+            var itemName = database.CustomerOrders.Select(x => x.Product.ENname);
+            var itemPrice = database.CustomerOrders.Select(x => x.ProductProperties.Price);
             
             for (int orderNumber = 1; orderNumber < database.CustomerOrders.Count(); orderNumber++)
             {
@@ -59,18 +59,18 @@ This current state (beta) does not have any UI element nor does it have any AI e
                     if (database.CustomerOrders.Contains(entityOrderToAdd))
                     {
                         // If already exists, increment quantity
-                        entityOrderToAdd.IncrementQuantity();
+                        entityOrderToAdd.Quantity++;
                     } else
                     {
                         // Adds a new entity to DBSet
-                        database.CustomerOrders.Add(entityOrderToAdd);
+                        database.Add(entityOrderToAdd);
                     };
 
                     // Saves changes
                     database.SaveChanges();
                     
                     // Write out confirmation message
-                    Console.WriteLine($"\nAdded product {productSet.Item2[0].ENname} ({productSet.Item1[0].Price}) to order menu");
+                    Console.WriteLine($"\nAdded product {productSet.Item2.ENname} ({productSet.Item1.Price}) to order menu");
                     break;
                 #endregion
 
@@ -139,7 +139,7 @@ This current state (beta) does not have any UI element nor does it have any AI e
         Console.WriteLine("Day Ended, generating report...");
     }
 
-    private static (List<ProductProperties>, List<Product>) PromptForItem(DatabaseModel database)
+    private static (ProductProperties, Product) PromptForItem(DatabaseModel database)
     {
         // Instance Variable
         var indexNumber = 0;
@@ -213,12 +213,10 @@ This current state (beta) does not have any UI element nor does it have any AI e
 
         }
         var productProperty = new ProductProperties { Price = productPrice, ProductSize = productSize };
-        List<ProductProperties> ItemToReturn = new List<ProductProperties> { productProperty };
 
         var returnProduct = new Product { ENname = chosenProductString, Categories = database.Categories.Single(x => x.CategoriesId == categoryNumber) };
-        List<Product> PropertyToReturn = new List<Product> { returnProduct };
 
-        return (ItemToReturn, PropertyToReturn);
+        return (productProperty, returnProduct);
     }
 }
 
