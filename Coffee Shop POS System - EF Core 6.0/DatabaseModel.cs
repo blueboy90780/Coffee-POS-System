@@ -13,9 +13,9 @@ internal class DatabaseModel : DbContext
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         // Linux Machine
-        optionsBuilder.UseSqlite(@"Data Source=/home/davidnguyen/Documents/Coffee Shop POS System/CoffeeShopDB.db");
-        
+        //optionsBuilder.UseSqlite(@"Data Source=/home/davidnguyen/Documents/Coffee Shop POS System/CoffeeShopDB.db");
+
         //Windows Machine
-        // optionsBuilder.UseSqlite(@"Data Source=D:\Coding Repositories\Coffee Shop POS System\CoffeeShopDB.db").UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+        optionsBuilder.UseSqlite(@"Data Source=C:\Users\David Nguyen\Documents\Git Repositories\Coffee-POS-System\CoffeeShopDB.db");//.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
     }
 }

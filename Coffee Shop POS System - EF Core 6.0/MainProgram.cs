@@ -1,7 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using System.Diagnostics;
-using Coffee_Shop_POS_System___EF_Core_6._0.Domain;
+﻿using Coffee_Shop_POS_System___EF_Core_6._0.Domain;
 
 namespace Coffee_Shop_POS_System___EF_Core_6._0;
 
@@ -34,8 +31,8 @@ This current state (beta) does not have any UI element nor does it have any AI e
             using var database = new DatabaseModel();
             
             // Displays all the items in the current order menu
-            var itemName = database.CustomerOrders.Select(x => x.Product.ENname);
-            var itemPrice = database.CustomerOrders.Select(x => x.ProductProperties.Price);
+            var itemName = database.CustomerOrders.Select(x => x.Product.Select(x => x.ENname));
+            var itemPrice = database.CustomerOrders.Select(x => x.ProductProperties.Select(x => x.Price));
             
             for (int orderNumber = 1; orderNumber < database.CustomerOrders.Count(); orderNumber++)
             {
@@ -48,22 +45,36 @@ This current state (beta) does not have any UI element nor does it have any AI e
             
             switch (userChoice)
             {
+                #region Add to Order Menu
                 // Adds an Item to Order Menu
                 case (int)UserOptions.Add:
                     
                     // Prompts for user input
                     var productSet = PromptForItem(database);
-                    
-                    // Adds a new entity to DBSet
-                    database.CustomerOrders.Add(new CustomerOrder(productSet.Item2, productSet.Item1));
-                    
+
+                    // Parses productSet into a proper CustomerOrder object
+                    CustomerOrder entityOrderToAdd = new CustomerOrder { Product = productSet.Item2, ProductProperties = productSet.Item1 };
+
+                    // Checks if the entity exists within the model
+                    if (database.CustomerOrders.Contains(entityOrderToAdd))
+                    {
+                        // If already exists, increment quantity
+                        entityOrderToAdd.IncrementQuantity();
+                    } else
+                    {
+                        // Adds a new entity to DBSet
+                        database.CustomerOrders.Add(entityOrderToAdd);
+                    };
+
                     // Saves changes
                     database.SaveChanges();
                     
                     // Write out confirmation message
-                    Console.WriteLine($"\nAdded product {productSet.Item2.ENname} ({productSet.Item1.ProductSize}) to order menu");
+                    Console.WriteLine($"\nAdded product {productSet.Item2[0].ENname} ({productSet.Item1[0].Price}) to order menu");
                     break;
-                
+                #endregion
+
+                #region Delete from Order Menu
                 // Deletes an Item to Order Menu
                 case (int)UserOptions.Delete:
                     
@@ -78,7 +89,9 @@ This current state (beta) does not have any UI element nor does it have any AI e
                     
                     Console.WriteLine($"Item Number {deleteNumber} has been deleted");
                     break;
-                
+                #endregion
+
+                #region Replaces an item from Order Menu
                 // Replaces (delete and add at specific index) to Order Menu
                 case (int)UserOptions.Replace:
                     // Prompt user for item
@@ -102,14 +115,19 @@ This current state (beta) does not have any UI element nor does it have any AI e
                     Console.WriteLine("Change applied");
                     
                     break;
-                
+                #endregion
+
+                #region Proceed with Customer Order
                 // Proceed with the customer Order
                 case (int)UserOptions.Proceed:
                     break; // Breaks the switch statement to increment customerNumber
-                
+                #endregion
+
+                #region Ends the Day
                 // Ends the day
                 case (int)UserOptions.EndDay:
                     break; // The statement "userChoice != (int) UserOptions.EndDay" gets evaluated to true false which will automatically break the loop
+                #endregion
                 default:
                     Console.WriteLine("That is an invalid input");
                     break;
@@ -121,7 +139,7 @@ This current state (beta) does not have any UI element nor does it have any AI e
         Console.WriteLine("Day Ended, generating report...");
     }
 
-    private static (ProductProperties, Product) PromptForItem(DatabaseModel database)
+    private static (List<ProductProperties>, List<Product>) PromptForItem(DatabaseModel database)
     {
         // Instance Variable
         var indexNumber = 0;
@@ -194,10 +212,13 @@ This current state (beta) does not have any UI element nor does it have any AI e
             }
 
         }
-        ProductProperties productProperty = new ProductProperties { Price = productPrice, ProductSize = productSize };
-        Product returnProduct = new Product { ENname = chosenProductString, Categories = database.Categories.Single(x => x.CategoriesId == categoryNumber) };
+        var productProperty = new ProductProperties { Price = productPrice, ProductSize = productSize };
+        List<ProductProperties> ItemToReturn = new List<ProductProperties> { productProperty };
 
-        return (productProperty, returnProduct);
+        var returnProduct = new Product { ENname = chosenProductString, Categories = database.Categories.Single(x => x.CategoriesId == categoryNumber) };
+        List<Product> PropertyToReturn = new List<Product> { returnProduct };
+
+        return (ItemToReturn, PropertyToReturn);
     }
 }
 
