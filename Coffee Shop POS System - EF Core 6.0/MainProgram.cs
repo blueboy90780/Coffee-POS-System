@@ -28,16 +28,21 @@ This current state (beta) does not have any UI element nor does it have any AI e
             Console.WriteLine($"\nCustomer #{customerNumber}");
             
             // Connects to the database
-            using var database = new DatabaseModel();
+            var database = new DatabaseModel();
             
-            // Displays all the items in the current order menu
-            var itemName = database.CustomerOrders.Select(x => x.ProductCatalogue.ENname);
-            var itemPrice = database.CustomerOrders.Select(x => x.ProductProperties.Price);
-            var tableCounter = database.ProductCatalogues.Count();
-
-            for (int orderNumber = 1; orderNumber < tableCounter; orderNumber++)
+            var tableCounter = database.CustomerOrders.Count();
+            Console.WriteLine($"Current Items in Order: {tableCounter}");
+            
+            if (tableCounter >= 1)
             {
-                Console.WriteLine($"{orderNumber}: {itemName.ElementAt(orderNumber)} \t {itemPrice.ElementAt(orderNumber)}");
+                // Displays all the items in the current order menu
+                var itemName = database.CustomerOrders.Select(x => x.ProductCatalogue.ENname);
+                var itemPrice = database.CustomerOrders.Select(x => x.ProductProperties.Price);
+    
+                for (int orderNumber = 1; orderNumber < database.ProductCatalogues.Count(); orderNumber++)
+                {
+                    Console.WriteLine($"{orderNumber}: {itemName.ElementAt(orderNumber)} \t {itemPrice.ElementAt(orderNumber)}");
+                }
             }
             
             // Get Options
@@ -61,17 +66,13 @@ This current state (beta) does not have any UI element nor does it have any AI e
                     {
                         // If already exists, increment quantity
                         entityOrderToAdd.Quantity++;
+                        Console.WriteLine("Product already exists in Customer Order, quantity is incremented instead");
                     } else
                     {
                         // Adds a new entity to DBSet
-                        database.Add(entityOrderToAdd);
+                        database.CustomerOrders.Add(entityOrderToAdd);
+                        Console.WriteLine($"\nAdded product {productSet.Item2.ENname} ({productSet.Item1.Price}) to order menu");;
                     };
-
-                    // Saves changes
-                    database.SaveChanges();
-                    
-                    // Write out confirmation message
-                    Console.WriteLine($"\nAdded product {productSet.Item2.ENname} ({productSet.Item1.Price}) to order menu");
                     break;
                 #endregion
 
@@ -86,7 +87,7 @@ This current state (beta) does not have any UI element nor does it have any AI e
                     
                     database.CustomerOrders.Remove(database.CustomerOrders.Find(deleteNumber) ?? throw new InvalidOperationException());
 
-                    database.SaveChanges();
+                    // database.SaveChanges();
                     
                     Console.WriteLine($"Item Number {deleteNumber} has been deleted");
                     break;
@@ -111,7 +112,7 @@ This current state (beta) does not have any UI element nor does it have any AI e
                     recordToChange!.ProductCatalogue = newProduct.Item2;
                     recordToChange!.ProductProperties = newProduct.Item1;
 
-                    database.SaveChanges();
+                    // database.SaveChanges();
                     
                     Console.WriteLine("Change applied");
                     
@@ -132,6 +133,12 @@ This current state (beta) does not have any UI element nor does it have any AI e
                 default:
                     Console.WriteLine("That is an invalid input");
                     break;
+            }
+            
+            // Saves the database
+            using (database)
+            {
+                database.SaveChanges();
             }
 
             // Move to next Customer Number
