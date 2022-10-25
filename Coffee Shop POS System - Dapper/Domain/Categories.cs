@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Coffee_Shop_POS_System___EF_Core_6._0.Domain;
+namespace Coffee_Shop_POS_System___Dapper.Domain;
 
+[Table("Categories")]
 public class Categories
 {
     // Entity Properties
@@ -10,5 +11,6 @@ public class Categories
     public bool IceAvailable { get; set; }
     
     // One (Category) records to many (Products) records
+    // Multiple category FK in the product entity
     public List<ProductCatalogue> Products { get; set; }
 }
