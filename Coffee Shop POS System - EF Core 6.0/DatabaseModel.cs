@@ -12,6 +12,7 @@ internal class DatabaseModel : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite(@"Data Source=/home/davidnguyen/Documents/Coffee-POS-System/Coffee Shop POS System - EF Core 6.0/CoffeeShopDB.db");//.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+        optionsBuilder.UseSqlite(
+            @"Data Source=/home/davidnguyen/Documents/Coffee-POS-System/Coffee Shop POS System - EF Core 6.0/CoffeeShopDB.db"); //.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
     }
 }

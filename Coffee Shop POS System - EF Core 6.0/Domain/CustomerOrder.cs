@@ -11,7 +11,7 @@ public class CustomerOrder
     // Foreign Key Relationship - Parent: Products
     public ProductCatalogue ProductCatalogue { get; set; }
     public int ProductCatalogueId { get; set; }
-    
+
     // Foreign Key Relationship - Parent: ProductProperties
     public ProductProperties ProductProperties { get; set; }
     public int ProductPropertiesId { get; set; }

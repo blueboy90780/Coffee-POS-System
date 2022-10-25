@@ -1,5 +1,4 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace Coffee_Shop_POS_System___EF_Core_6._0.Domain;
@@ -19,10 +18,10 @@ public class ProductCatalogue
 
     // One (Product) records / key to many (ProductProperties) records
     public List<ProductProperties> ProductProperties { get; set; }
-    
+
     // One (Product) records / key to many (ProductProperties) records
     public List<CustomerOrder> CustomerOrders { get; set; }
-    
+
     // Foreign Key Relationship - Parent: Categories
     public Categories Categories { get; set; } //<-- navigation property
     public int CategoriesId { get; set; }
