@@ -61,26 +61,20 @@ This current state (beta) does not have any UI element nor does it have any AI e
                     var productSet = PromptForItem(database);
 
                     // Parses productSet into a proper CustomerOrder object
-                    var entityOrderToAdd = new CustomerOrder
-                        { ProductCatalogue = productSet.Item2, ProductProperties = productSet.Item1 };
+                    var entityOrderToAdd = new CustomerOrder()
+                        {
+                            ProductCatalogue = productSet.Item2,
+                            ProductProperties = productSet.Item1, 
+                        };
 
-                    // Checks if the entity exists within the model
-                    if (database.CustomerOrders.Contains(entityOrderToAdd))
+                    using (database = new DatabaseModel())
                     {
-                        // If already exists, increment quantity
-                        entityOrderToAdd.Quantity++;
-                        Console.WriteLine("Product already exists in Customer Order, quantity is incremented instead");
-                    }
-                    else
-                    {
-                        // Adds a new entity to DBSet
                         database.CustomerOrders.Add(entityOrderToAdd);
-                        Console.WriteLine(
-                            $"\nAdded product {productSet.Item2.ENname} ({productSet.Item1.Price}) to order menu");
-                        ;
+                        database.SaveChanges();
                     }
 
-                    ;
+                    Console.WriteLine($"\nAdded product {productSet.Item2.ENname} ({productSet.Item1.Price}) to order menu");
+                    
                     break;
 
                 #endregion
@@ -154,12 +148,6 @@ This current state (beta) does not have any UI element nor does it have any AI e
                     break;
             }
 
-            // Saves the database
-            using (database)
-            {
-                database.SaveChanges();
-            }
-
             // Move to next Customer Number
             customerNumber += 1;
         }
@@ -206,12 +194,13 @@ This current state (beta) does not have any UI element nor does it have any AI e
         var chosenProductCatalogue = availableProductRecords.Single(x => x.ENname == chosenProductString);
 
         // Gets the record with the product's variation
-        var productVariation = database.ProductVariants
+        var productVariation = database.ProductProperties
             .Where(x => x.ProductCatalogueId == chosenProductCatalogue.ProductCatalogueId).ToList(); // 3 records stored
 
         // Local Variables
         uint productPrice = 0;
         Size? productSize = null;
+        ProductProperties productProperty;
 
         // Checks if the product has sizes
         if (productVariation.First().ProductSize != null)
@@ -239,14 +228,30 @@ This current state (beta) does not have any UI element nor does it have any AI e
                     Console.WriteLine("Only numbers between 1-3 are valid");
                     break;
             }
+
+            productProperty = productVariation[(int) chosenSize];
         }
-
-        var productProperty = new ProductProperties { Price = productPrice, ProductSize = productSize };
-
-        var returnProduct = new ProductCatalogue
+        else
         {
-            ENname = chosenProductString, Categories = database.Categories.Single(x => x.CategoriesId == categoryNumber)
-        };
+            productProperty = productVariation[0];
+        }
+        
+        var returnProduct = database.ProductCatalogues.Single(x => x.ENname == chosenProductString);
+        // Instantiates variables to return
+        // var productProperty = new ProductProperties
+        // {
+        //     Price = productPrice,
+        //     ProductSize = productSize
+        // };
+
+        // var returnProduct = new ProductCatalogue
+        // {
+        //     ENname = chosenProductString,
+        //     CategoriesId = categoryNumber,
+        //     Recommended = 
+        //     // Categories = database.Categories.Single(x => x.CategoriesId == categoryNumber)
+        // };
+
 
         return (productProperty, returnProduct);
     }

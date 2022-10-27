@@ -7,7 +7,7 @@ internal class DatabaseModel : DbContext
 {
     public DbSet<Categories> Categories { get; set; }
     public DbSet<ProductCatalogue> ProductCatalogues { get; set; }
-    public DbSet<ProductProperties> ProductVariants { get; set; }
+    public DbSet<ProductProperties> ProductProperties { get; set; }
     public DbSet<CustomerOrder> CustomerOrders { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

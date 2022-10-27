@@ -4,6 +4,18 @@ namespace Coffee_Shop_POS_System___EF_Core_6._0.Domain;
 
 public class CustomerOrder
 {
+    public CustomerOrder()
+    {
+        if (this.Quantity == 0)
+        {
+            Quantity++;
+        }
+        else
+        {
+            Quantity = 0;
+        }
+    }
+
     // Entity Properties
     public int CustomerOrderId { get; set; }
     public int Quantity { get; set; }
